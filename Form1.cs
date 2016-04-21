@@ -11,6 +11,7 @@ namespace Project
 {
     public partial class Form1 : Form
     {
+        // Declare class variables
         public List<string> Data = new List<string> { };
         public List<string> replaceableList = new List<string> { };
         public string FileName;
@@ -38,9 +39,11 @@ namespace Project
             StringBuilder builder2 = new StringBuilder();
             foreach (string item in Data)
             {
+                // Append the item to the string builder
                 builder2.Append(item);
             }
 
+            // Call the ReplaceData() void
             ReplaceData();
         }
 
@@ -76,13 +79,38 @@ namespace Project
 
                 StringBuilder builder2 = new StringBuilder();
 
+                int index = 0;
                 Console.WriteLine(items.Count);
                 foreach (string item3 in items)
                 {
+                    // Append the item with the replace key to replace later.
+                    builder2.Append("rplace" + index.ToString());
+
+                    // \r\n inserts a new line / linebreak
+                    builder2.Append("\r\n");
                     builder2.Append(item3);
-                    builder2.Append("|");
+                    builder2.Append("\r\n");
+
+                    // increment the index by one.
+                    index++;
                 }
 
+
+                string parsedData = builder2.ToString();
+
+                // Create a new string from the StringBuilder and replace the replacement keys.
+                parsedData = parsedData.Replace("rplace0", "Random Numbers:");
+                parsedData = parsedData.Replace("rplace1", "First Name:");
+                parsedData = parsedData.Replace("rplace2", "Last Name:");
+                parsedData = parsedData.Replace("rplace3", "Show only the last four of the Credit Card");
+                parsedData = parsedData.Replace("rplace4", "Price:");
+                parsedData = parsedData.Replace("rplace5", "Spent On:");
+
+                // Set the counter / index back to 0 for the next list
+                index = 0;
+
+
+                // If the price is over 100, set 'yes'.
                 if (float.Parse(items[4]) > 100)
                 {
                     builder2.Append("yes");
@@ -92,16 +120,19 @@ namespace Project
                     builder2.Append("no");
                 }
 
+                // Path to save the file to
                 string path =  Path.Combine("C:/Users/" + Environment.UserName + "/Desktop", "data_scrubbed.txt");
 
                 string fileContents = String.Empty;
 
                 if (File.Exists(path))
                 {
+                    // If the scrub file already exists, get the contents of it.
                     fileContents = File.ReadAllText(path);
                 }
 
-                File.WriteAllText(path, fileContents + builder2.ToString() + "\r\n");
+                // Write the contents to the file.
+                File.WriteAllText(path, fileContents + parsedData + "\r\n");
             }
             string scrubbedPath = Path.Combine("C:/Users/" + Environment.UserName + "/Desktop", "data_scrubbed.txt");
         }
@@ -113,15 +144,19 @@ namespace Project
             List<char> itemList = new List<char> {};
             foreach (char i in item)
             {
+                //Add the character to the list
                 itemList.Add(i);
             }
 
             foreach (char item2 in itemList)
             {
+                // Write the item out to the console
                 Console.Write(item2);
             }
 
             int itemListLength = itemList.Count;
+
+            // Get a new string that contains 13 random chars
             string newString = randomX(13);
 
             newString = newString + itemList[itemListLength - 4] + itemList[itemListLength - 3] + itemList[itemListLength - 2] + itemList[itemListLength -1];
@@ -150,9 +185,12 @@ namespace Project
             char ch;
             for (int i = 0; i < Size; i++)
             {
+                // Foreach number in the size int, add a random letter from the string into the new string builder.
                 ch = input[random.Next(0, input.Length)];
                 builder.Append(ch);
             }
+
+            // Return the random string
             return builder.ToString();
         }
 
@@ -193,11 +231,6 @@ namespace Project
             }
 
             FileName = ofd.FileName;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
